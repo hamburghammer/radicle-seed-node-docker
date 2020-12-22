@@ -27,11 +27,19 @@ COPY --from=ui /radicle-bins/seed/ui/public /radicle-ui
 
 RUN mkdir /radicle-seed
 RUN printf "#!/bin/sh \n radicle-keyutil --filename /radicle-seed/secret.key \n echo 'Generated key inside /radicle-seed/'" > /usr/local/bin/keygen && chmod +x /usr/local/bin/keygen
-RUN printf "#!/bin/sh \n \
-	radicle-seed-node --root /radicle-seed --assets-path /radicle-ui --peer-listen 0.0.0.0:12345 --http-listen 0.0.0.0:80 $@ < /radicle-seed/secret.key" > /usr/local/bin/seed \
-	&& chmod +x /usr/local/bin/seed
 RUN printf "#!/bin/sh \n radicle-seed-node --help" > /usr/local/bin/seed-help && chmod +x /usr/local/bin/seed-help
 
+ARG SEED_NAME="seedling"
+ARG SEED_DESCRIPTION="'A selfhosted seedling'"
+ARG SEED_PUBLIC_ADDR="example.com:12345"
+
+ENV SEED_NAME $SEED_NAME
+ENV SEED_DESCRIPTION $SEED_DESCRIPTION
+ENV SEED_PUBLIC_ADDR $SEED_PUBLIC_ADDR
+ENV SEED_PARAMS ""
+
+COPY ./seed.sh /usr/local/bin/seed
+RUN chmod +x /usr/local/bin/seed
 
 CMD ["echo", "Start the server with 'seed [OPTIONS]' use 'keygen' to generate the peer key. Mount a volume to '/radicle-seed' to persist the data. For help run 'seed-help'"]
 
