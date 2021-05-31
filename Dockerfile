@@ -42,7 +42,7 @@ RUN printf "#!/bin/sh \n radicle-keyutil --filename /radicle-seed/secret.key \n 
 RUN printf "#!/bin/sh \n radicle-seed-node --help" > /usr/local/bin/seed-help && chmod +x /usr/local/bin/seed-help
 
 ARG SEED_NAME="seedling"
-ARG SEED_DESCRIPTION="'A selfhosted seedling'"
+ARG SEED_DESCRIPTION="A selfhosted seedling"
 ARG SEED_PUBLIC_ADDR="example.com:12345"
 
 ENV SEED_NAME $SEED_NAME
